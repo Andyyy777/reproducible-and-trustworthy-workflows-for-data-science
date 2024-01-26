@@ -198,27 +198,164 @@ Then we can view the history, along with the commit messages. To view the state 
 
 Sometimes you want to be able to explore and run the files from the past, or bring a past version of a file to the future. When we need to do either of those things, we should be working with Git in our local repository. 
 
-Here's the same history as viewed above, but using the JupyterLab Git extension:
+Here's the same history as viewed above, but using the Git command line:
 
-<img src="img/jupyter-git-history.png" width=800>
+```sh
+git log
+```
 
-To see what was changed at a given point in history, click the down arrow associated with the commit. You can then diff the file (see what was changed for a particular file by clicking the file icon beside it.
+```out
+commit cab2e6a93f113602974390f64e88dad0a5d6eae3 (HEAD -> master, origin/master, origin/HEAD)
+Author: Tiffany Timbers <tiffany.timbers@gmail.com>
+Date:   Thu Dec 9 10:33:39 2021 -0800
 
-<img src="img/jupyter-view-changes.png">
+    added example using docker-compose.yml
+
+commit b9c1bdcdc0cf8f7bce3fd3874cce0e76b6c474e3 (tag: v4.0)
+Merge: 238dbcb 9b4af1d
+Author: Tiffany A. Timbers <tiffany.timbers@gmail.com>
+Date:   Tue Feb 4 10:49:23 2020 -0800
+
+    Merge pull request #1 from kguidonimartins/master
+    
+    Update README.md
+
+commit 238dbcb02a77acb21b251aff7ff954f8c22a91bc
+Author: ttimbers <tiffany.timbers@stat.ubc.ca>
+Date:   Tue Feb 4 10:47:03 2020 -0800
+
+    added conda to path of Dockerfile
+
+commit 9b4af1d03c282a2d747d642a0c8847fd53b4f1d7
+:
+```
+
+The `:` at the end tells us there are more commits than shown. 
+You can navigate this log by scrolling with the mouse, arrow keys,
+`b` key, or by pressing the spacebar.
+
+This log is also searchable.
+Press `/` + search term + enter to search for a word.
+`n`/`N` goes to next/previous match for the search term.
+
+To exit from the Git history log, we press the `q` 
+(short for "quit") character.
+
+To see what was changed at a given point in history, 
+we can use the `git show` command.
+For example we can view what was changed 
+in the commit with the message
+"added conda to path of Dockerfile"
+which has the long SHA `238dbcb02a77acb21b251aff7ff954f8c22a91bc`
+we would type: 
+
+```sh
+git show 238dbcb
+```
+
+> Note: we only used the first 7 digits of the long SHA
+> (we call this the short SHA).
+> This is usually unique enough for Git to autofill in the rest for us.
+
+```out
+commit 238dbcb02a77acb21b251aff7ff954f8c22a91bc
+Author: ttimbers <tiffany.timbers@stat.ubc.ca>
+Date:   Tue Feb 4 10:47:03 2020 -0800
+
+    added conda to path of Dockerfile
+
+diff --git a/Dockerfile b/Dockerfile
+index 05ad853..faf3918 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -20,7 +20,11 @@ RUN wget --quiet https://repo.anaconda.com/archive/Anaconda3-2019.10-Linux-x86_6
+     echo "conda activate base" >> ~/.bashrc && \
+     find /opt/conda/ -follow -type f -name '*.a' -delete && \
+     find /opt/conda/ -follow -type f -name '*.js.map' -delete && \
+-    /opt/conda/bin/conda clean -afy
++    /opt/conda/bin/conda clean -afy && \
++    /opt/conda/bin/conda update -n base -c defaults conda
+ 
+ # install docopt python package
+ RUN /opt/conda/bin/conda install -y -c anaconda docopt
++
++# put anaconda python in path
++ENV PATH="/opt/conda/bin:${PATH}"
+```
+### Reflection point
+
+Here's the website view of the same commit: 
+
+<img src="img/238dbcb0.png" width=500>
+
+[Source](https://github.com/ttimbers/data_analysis_pipeline_eg/commit/238dbcb02a77acb21b251aff7ff954f8c22a91bc)
+
+How similar are the local and webpage log views?? 
+Do you get the same information from both? Which seems easier to read/navigate?
+Which would be more useful for testing out your code?
 
 #### Travelling in time to the past
 
-If you wanted to move your project's file and directories (so entire state) back to this point in time you can do that by clicking the clock icon. **NOTE: If you do this, be sure you pushed your changes, as it will discard anything more recent than this commit on your local computer (i.e., this is a hard reset).**
+If you wanted to move your project's file and directories (so entire state) back to this point in time you can do that by running `git checkout <commit-id> .`. The last `.` is really important, so don't forget it!
 
-<img src="img/jupyter-hard-reset.png" width=500>
+Let's do this now to go back to the point just before 
+the changes we explored above:
 
-Again, because this is a hard reset, Git will warn you about the consequences:
+```
+git checkout 9b4af1d .
+```
 
-<img src="img/jupyter-hard-reset-warning.png" width=500>
+When we look at the `Dockerfile` (the file that was changed in the commit after this)
+we see it does not have the changes we viewed in the `238dbcb`!
+Also, if you run `git log` you will see the more recent commits in your history are GONE!
 
-Once, you have done this, you will see the more recent commits in your history are GONE!
+Don't panic! We can go back to the future!
+To get there (where we were before we started time travelling,
+we can use `git checkout` the `HEAD` commit nickname:
 
-<img src="img/jupyter-after-hard-reset.png" width=500>
+```
+git checkout HEAD .
+```
+
+> Note: `HEAD` is the nickname for the most recent commit in a GitHub repository.
+
+Now, let's check our `git log` to make sure we returned safely!
+
+```sh
+git log
+```
+
+```out
+commit cab2e6a93f113602974390f64e88dad0a5d6eae3 (HEAD -> master, origin/master, origin/HEAD)
+Author: Tiffany Timbers <tiffany.timbers@gmail.com>
+Date:   Thu Dec 9 10:33:39 2021 -0800
+
+    added example using docker-compose.yml
+
+commit b9c1bdcdc0cf8f7bce3fd3874cce0e76b6c474e3 (tag: v4.0)
+Merge: 238dbcb 9b4af1d
+Author: Tiffany A. Timbers <tiffany.timbers@gmail.com>
+Date:   Tue Feb 4 10:49:23 2020 -0800
+
+    Merge pull request #1 from kguidonimartins/master
+    
+    Update README.md
+
+commit 238dbcb02a77acb21b251aff7ff954f8c22a91bc
+Author: ttimbers <tiffany.timbers@stat.ubc.ca>
+Date:   Tue Feb 4 10:47:03 2020 -0800
+
+    added conda to path of Dockerfile
+
+commit 9b4af1d03c282a2d747d642a0c8847fd53b4f1d7
+Author: Karlo Guidoni Martins <kguidonimartins@gmail.com>
+Date:   Tue Feb 4 13:04:39 2020 -0300
+
+    Update README.md
+    
+    Remove the duplicate `### Usage:` header.
+:
+```
 
 #### Exercise:
 
@@ -226,16 +363,18 @@ Once, you have done this, you will see the more recent commits in your history a
 
 2. View the names of the files that were changed in commit `44c17be`, and the specific changes made to the file `doc/count_report.Rmd`.
 
-3. Do a hard reset to the state of the repository as it was in commit `44c17be`.
+3. Checkout the  `44c17be` commit and explore it locally.
 
-4. Then pull the Git remote repository to go back to where you started.
+4. Then go back to where you started (remember to use the nickname `HEAD`).
 
-*Question - could you have gone back to where you started if the work was not stored in the remote repository?*
 
+### Reflection point
+
+Say we decided to return to a point in the past, and restart our work from there? How would we do that?
 
 #### Bringing something something from the back from the past
 
-There is not a nice and easy way (that I am aware of) of cherry-picking a version of single file from the past using the JupyterLab Git extension. To do this, I resort to the Git command line tool in the terminal. The general command is:
+SThere is not a nice and easy way (that I am aware of) of cherry-picking a version of single file from the past using the JupyterLab Git extension. To do this, I resort to the Git command line tool in the terminal. The general command is:
 
 ```
 git checkout <HASH> <FILE>

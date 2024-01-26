@@ -52,22 +52,6 @@ A more realistic Git branching example for a data analysis project might look so
 
 <img src="img/git-branch-diagrams.png" width=400>
 
-### Creating a branch using the JupyterLab Git extension
-
-Using the JupyterLab Git extension, you create a new branch on your local computer by clicking on the up arrow in the "Current Branch" tab, and clicking the blue "New Branch" button.
-
-<img src="img/create-new-branch.png" width=500>
-
-A dialogue box will open, and ask you to name the branch. After you do this, click on the blue "Create Branch" button. Remember to name it after the work you plan to do. Here we plan to fix the documentation a bit, so we will call it `patch-docs`.
-
-<img src="img/name-new-branch.png" width=300>
-
-To finally switch to the new playground (i.e., your new branch) click on the branch name of the new branch you just created in the Branches section of the "Current Branch" tab.
-
-<img src="img/switch-to-new-branch.png" width=500>
-
-As you work here, you can commit your changes to version control locally, and even push your changes to the remote repository. All the changes however will live only on that branch until you do something to move them to another branch. When you want to start discussing your changes with your collaborators to start the process of bringing these changes into the main branch (main code-base) you typically create what is called a pull request. A pull request is a like an asking your collaborators "is it OK to merge my code?" Usually there will be some discussion and a few more revisions to the code, but eventually they will give you the thumbs up when everything looks good and the code can then be merged. We will discuss this more next.
-
 ### Creating a branch using the command line
 
 In the terminal, and in the working directory of the project in which you wish to create a branch,
@@ -378,11 +362,13 @@ We are going to each create our own project board for our MDS homework. I have s
 
 1. Click the green "**Use this template**" button from [this GitHub repository](https://github.com/UBC-DSCI/dsci-310-homework) to obtain a copy of it for yourself (do not fork it).
 
-2. Using the GitHub webpage, make a new branch called `create` in your copy of that repository (this will generate the issues for you).
+2. Click on the Actions tab, and then click on the workflow `.github/workflows/create_issues.yml`. You then should see a **“Run workflow”** button with a drop down menu, from that menu select **“Run workflow”**.
 
-3. Click on the Projects tab, and then click "Create a project". Give it a name, and select "Basic kanban" as the template option.
+3. Wait patiently while GitHub Actions to create 24 issues for you in your copy of this repository.
 
-4. Use the issues in the repo to set-up a project board for the next two weeks (or more) of your DSCI 310 homework. For each issue you add to the project, assign it to yourself and add a label of "group-work" or "individual-work".
+4. Click on the Projects tab, and then click **“Link a project”** and then select **“Create a new Project”**. Select **“Board”** as the template option and give the project a a name.
+
+5. Use the issues in the repo to set-up a project board for the next two weeks (or more) of your DSCI 310 homework. For each issue you add to the project, assign it to yourself and add a label of "group-work" or "individual-work".
 
 Additional Resources:
 - [Assigning issues and pull requests to other GitHub users](https://help.github.com/en/github/managing-your-work-on-github/assigning-issues-and-pull-requests-to-other-github-users)
