@@ -69,7 +69,7 @@ from Data Science: A First Introduction and read (or re-read) it.
 
 *c. At the end of every work session.*
 
-*d. Once a week.*
+*d. Once a week.* 
 
 
 **5. You try to push your most recent commit from your locale version control repository to your remote repository on GitHub and it fails because Git says the `remote contains work that you do not have locally`. What do should you do next?**
